@@ -3,7 +3,7 @@ Getting Synology DSM to work with OpenVSwitch + Bond + Multi-VLANs + Jumbo Packe
 
 ## Why you need this?
 If you are here, you probably share a similar adventure with me:
-1. Spent a fortune for the all mighty Synology NAS;
+1. Sinked a fortune for the all mighty Synology NAS;
 2. Let's LACP bond this baby, make the maximum use of the powerfulness;
 3. Ooops, I have a dedicated management VLAN, what do I do?
     1. Googling around a bit, found [some instructions](http://www.mybenke.org/?p=2373), created additional `ifcfg-bond0.(tag)` files;
@@ -13,7 +13,7 @@ If you are here, you probably share a similar adventure with me:
     2. Plan and architect the VMs / containers, the whole new world became quite attractive!
 5. Install VM Manager / Docker, which turned on OpenVSwitch, and the world instantly darkens...
     1. Your existing bonded multiple VLAN setup is blown into oblivion;
-    2. And follow the old method of re-creating ifcfg file could bring anything back.
+    2. And follow the old method of re-creating ifcfg file couldn't bring anything back.
 6. Double, triple Googling around, finally found [another guide](https://community.synology.com/enu/forum/12/post/123052);
     1. Apparently Synology has never considered the scenario of OpenVSwitch + Bond + Multi-VLANs;
     2. As a result, the `/etc/rc.network` has to be modified, adding additional logic;
