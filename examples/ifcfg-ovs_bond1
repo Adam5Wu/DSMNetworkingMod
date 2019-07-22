@@ -1,0 +1,9 @@
+DEVICE=ovs_bond1
+ONBOOT=yes
+BOOTPROTO=dhcp
+IPV6INIT=off
+TYPE=OVS
+OVS_VLAN_ID=10
+OVS_PARENT=ovs_bond0
+OVS_MACADDR=00:11:32:xx:xx:xx
+SLAVE_LIST="eth0 eth1 eth2 eth3 "

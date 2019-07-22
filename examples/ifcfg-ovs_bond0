@@ -1,0 +1,11 @@
+DEVICE=ovs_bond0
+BOOTPROTO=dhcp
+ONBOOT=yes
+IPV6INIT=off
+TYPE=OVS
+BOND_MODE=balance-tcp
+BONDING_OPTS="bond_mode=balance-tcp lacp=active"
+PRIMARY=eth0
+SLAVE_LIST="eth0 eth1 eth2 eth3 "
+OVS_VLAN_ID=2
+OVS_PATCH="patch0a:patch0b "
