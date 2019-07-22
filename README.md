@@ -26,7 +26,7 @@ If you are here, you probably share a similar adventure with me:
 
 This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, and tries to cover all corner aspects, enabling a complete solution.
 
-## How did you solve the problem?
+## How did I solve the problem?
 1. Disconnected interface problem:
     - Through trial-and-error, I found having a non-empty "SLAVE_LIST" with interfaces that is in up state makes DSM think the bond interface is connected;
     - But of course I noticed some logic in `/etc/rc.network` that acks upon values of "SLAVE_LIST";
@@ -43,7 +43,12 @@ This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, an
             3. Let the VM manager automatically attach taps to the VM bridge instead;
         - Note that, if you want you VMs to use jumbo packets, you still need to manually adjust the MTU of the tap interfaces. But at least your physical NAS will always respect your MTU configurations now.
     - Again, more logics are injected into `/etc/rc.network` for ability to create patch interfaces.
-        
+
+## Other changes I made (to `/etc/rc.network`)
+1. Refactored the code related to MTU and dhcp client;
+2. Cleaned up some mixed use of local and non-local variables;
+3. Fixed a typo.
+
 ## How do I apply this solution?
 1. You should be using `DSM 6.2.2-24922`;
 2. Apply the `/etc/rc.network` patch file;
