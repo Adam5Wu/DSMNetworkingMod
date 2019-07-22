@@ -1,6 +1,7 @@
 # Example configuration files
 This example assumes the following:
 - You bond all 4 interface and running VM manager;
+- You don't use IPv6;
 - You have a data VLAN 2 with MTU 9000;
 - You have a management VLAN 10 with MTU 1500;
 - You may (later) want to used large MTU for your VMs.
