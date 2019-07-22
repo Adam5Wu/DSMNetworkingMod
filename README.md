@@ -1,5 +1,5 @@
 # DSM Networking Mod
-Getting Synology DSM to work with OpenVSwitch + Bond + Multi-VLANs + Jumbo Packet with support for Virtualization
+Getting Synology DSM to work with OpenVSwitch + Bond + Multi-VLANs + Jumbo Packet + Virtualization
 
 ## Why you need this?
 If you are here, you probably share a similar adventure with me:
@@ -24,7 +24,7 @@ If you are here, you probably share a similar adventure with me:
     2. Unable to use jumbo packet on any of the bond interfaces when you start a VM;
         - As soon as you start any VM, all bond interfaces' MTU reset to 1500.
 
-This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, and tries to cover all corner aspects, enabling a complete solution.
+This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, and tries to cover all corner aspects, enabling a workable OpenVSwitch + Bond + Multi-VLANs + Jumbo Packet + Virtualization solution.
 
 ## How did I solve the problem?
 1. Disconnected interface problem:
