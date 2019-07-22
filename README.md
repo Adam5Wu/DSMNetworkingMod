@@ -11,7 +11,7 @@ If you are here, you probably share a similar adventure with me:
 4. Hmm, there is some VM Manager / Docker add-on, seems quite interesting;
     1. Heck why not, this thing got an Xeon inside, better make full use of the power I paid for;
     2. Plan and architect the VMs / containers, the whole new world became quite attractive!
-5. Install VM Manager / Docker, which turned on OpenVSwitch, and the world instantly darkens...
+5. **Install VM Manager / Docker, which turned on OpenVSwitch, and the world instantly darkens...**
     1. Your existing bonded multiple VLAN setup is blown into oblivion;
     2. And follow the old method of re-creating ifcfg file couldn't bring anything back.
 6. Double, triple Googling around, finally found [another guide](https://community.synology.com/enu/forum/12/post/123052);
