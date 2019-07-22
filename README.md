@@ -10,7 +10,7 @@ If you are here, you probably share a similar adventure with me:
     2. It works! Although a bit of hacking was needed, not bad.
 4. Hmm, there is some VM Manager / Docker add-on, seems quite interesting;
     1. Heck why not, this thing got an Xeon inside, better make full use of the power I paid for;
-    2. Plan and architect the VMs / containers, the whole new world became quite attractive!
+    2. Plan and architect the VMs / containers, the whole-new-world became quite attractive!
 5. **Install VM Manager / Docker, which turned on OpenVSwitch, and the world instantly darkens...**
     1. Your existing bonded multiple VLAN setup is blown into oblivion;
     2. And follow the old method of re-creating ifcfg file couldn't bring anything back.
@@ -18,7 +18,7 @@ If you are here, you probably share a similar adventure with me:
     1. Apparently Synology has never considered the scenario of OpenVSwitch + Bond + Multi-VLANs;
     2. As a result, the `/etc/rc.network` has to be modified, adding additional logic;
     3. Following the new guide, you are able to establish multiple bonded VLAN interfaces, success!
-7. But the hack seems incomplete, and you are still bothered by the following problems:
+7. But as you continue deploying your new architecture, you realized that the hack was incomplete, and you are bugged by the following problems:
     1. Except the first bond interface, all other interfaces are shown as "disconnected";
         - As a result, you are not able to use other interfaces from GUI, such as when you install MailPlus server;
     2. Unable to use jumbo packet on any of the bond interfaces when you start a VM;
