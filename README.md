@@ -57,4 +57,4 @@ This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, an
     patch /etc/rc.network rc.network.patch
     ```
     - If you have already modified yours, don't worry, you can get back the original copy from `/etc.defaults/rc.network`;
-3. Refer to sample configurations in the examples directory, adjust for your needs.
+3. Refer to sample configurations in the [examples directory](https://github.com/Adam5Wu/DSMNetworkingMod/blob/master/examples), adjust for your needs.
