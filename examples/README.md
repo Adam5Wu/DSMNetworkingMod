@@ -20,8 +20,7 @@ This example assumes the following:
 
 ## How about MTU?
 That needs an additional step of hack:
-- Edit your `/etc/synoinfo.conf
-- Add/modify the following keys:
+- Edit your `/etc/synoinfo.conf`, add/modify the following keys:
 	```
 	eth0_mtu="9000"
 	eth1_mtu="9000"
