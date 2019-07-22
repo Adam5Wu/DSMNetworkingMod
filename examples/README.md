@@ -30,3 +30,6 @@ That needs an additional step of hack:
 	bond1_mtu="1500"
 	bond99_mtu="9000"
 	```
+- Q: I am unable to get large MTU on my VM's tap interfaces!
+
+	A: Remember for OpenVSwitch, the effective MTU on a bridge is the minimum value on any of attached interfaces. So in order to use large MTU on *any* VM, *all* VM's tap interfaces have to upgrade to the same or larger MTU size! It is safe to do the upgrade, because for each VM that you don't want large MTU, you simply configure the smaller MTU from *inside* the guest OS.
