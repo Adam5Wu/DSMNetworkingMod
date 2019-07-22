@@ -52,5 +52,9 @@ This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, an
 ## How do I apply this solution?
 1. You should be using `DSM 6.2.2-24922`;
 2. Apply the `/etc/rc.network` patch file;
+    ```bash
+    cp /etc/rc.network /volume1/backup/
+    patch /etc/rc.network rc.network.patch
+    ```
     - If you have already modified yours, don't worry, you can get back the original copy from `/etc.defaults/rc.network`;
 3. Refer to sample configurations in the examples directory, adjust for your needs.
