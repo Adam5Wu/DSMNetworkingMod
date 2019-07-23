@@ -34,10 +34,9 @@ This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, an
 2. Jumbo Packet problem:
     - OpenVSwitch automatically reduce MTU on all interfaces on a bridge to the minimum value allowed across all attached interfaces;
     - When you start a VM, a tap interface is attached to the bridge which all your other network interfaces attach to, and the VM Manager seems only want to create ones with MTU of 1500. As a result all interfaces are forced downgrade to non-jumbo mode;
-        - Of course you could manually upgrade each tap interface's MTU, and get back the larger MTU after upgrading all taps;
-        - But as soon as you create / start another VM, the problem is back again.
+        - Of course you could manually upgrade each tap interface's MTU, and get back the larger MTU after upgrading all taps; But as soon as you create / start another VM, the problem is back again.
     - In order to permenantly solve the problem, you cannot have the VM manager attach taps to the same bridge.
-        - Luckily, OpenVSwitch already have a solution for scenario;
+        - Luckily, OpenVSwitch already have a solution that is applicable for this scenario;
             1. Create another bridge, which is not backed by any physical interface, dedicated for VMs;
             2. Create a pair of peering "patch" interfaces, with each end on your existing bridge (with physical bond interface) and VM bridge;
             3. Let the VM manager automatically attach taps to the VM bridge instead;
