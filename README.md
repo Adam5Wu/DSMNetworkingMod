@@ -49,8 +49,10 @@ This modification extends existing guide on OpenVSwitch + Bond + Multi-VLANs, an
 3. Fixed a typo.
 
 ## How do I apply this solution?
-1. You should be using `DSM 6.2.2-24922`;
-2. Apply the `/etc/rc.network` patch file;
+WARNING: Messing with network RC script can prevent DSM from brining up network interfaces, and hence "brick" the device. It is the best that you have a working alternative means to access the DSM commandline console (for example, have an adapter and figure out pins to hook up with the serial console) before performing any of the operations below.
+
+1. Fetch the patch file from the directory matching your current DSM version, e.g. `6.2.2-24922`;
+2. Apply the patch file:
     ```bash
     cp /etc/rc.network /volume1/backup/
     patch /etc/rc.network rc.network.patch

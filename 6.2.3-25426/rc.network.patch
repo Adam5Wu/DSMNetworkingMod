@@ -1,4 +1,4 @@
-855a856,862
+863a864,870
 > 	local ifconfigFile
 > 
 > 	local OVS_VLAN_ID
@@ -6,94 +6,59 @@
 > 	local OVS_MACADDR
 > 	local OVS_PATCH
 > 
-861a869,872
+869a877,880
 > 	ifconfigFile="/etc/sysconfig/network-scripts/ifcfg-$1"
 > 	if ! source "$ifconfigFile" ; then
 >         return
 > 	fi
-863c874
+871c882
 < 	#If the external interface has been remove.
 ---
 > 	#If the external interface has been removed.
-866c877
+874c885
 < 	if [ -z "$tmpdev" ]; then
 ---
 > 	if [ -z "$tmpdev" ] && [ -z "$OVS_PARENT" ] && [ -z "$OVS_PATCH" ]; then
-869c880
+877c888
 < 		rm /etc/sysconfig/network-scripts/ifcfg-$1
 ---
 > 		rm "$ifconfigFile"
-873,876c884
+881,884c892,899
 < 	ifconfigFile="/etc/sysconfig/network-scripts/ifcfg-$1"
 < 	if ! source  "$ifconfigFile" ; then
 <                 return
 < 	fi
 ---
 >     if [ ! -z "$OVS_PARENT" ] ; then
-878,888c886,888
-< 	check_exist_ovs $1
-< 	/bin/ovs-vsctl add-br $1
-< 	set_ovs_mac_address $1
-< 	for device in `grep -l "^BRIDGE=$1$" /etc/sysconfig/network-scripts/ifcfg-*` ; do
-< 		DEVICE=`basename ${device} | cut -d '-' -f 2`
-< 		# Config bridge of wlan in /etc/hostapd/hostapd.conf and controlled by hostapd (activate_ap)
-< 		find=`echo "${DEVICE}" | grep -c wlan`
-< 		if [ $find -eq 1  ]; then
-< 			# only wired interface will be added to bridge as a slave
-< 			# wlan interface should be handled by synowifid
-< 			continue
----
+> 
 > 		/bin/ovs-vsctl add-br $1 $OVS_PARENT $OVS_VLAN_ID
 > 		if [ ! -z "$OVS_MACADDR" ] ; then
 > 		    /bin/ovs-vsctl set int $1 mac=\"$OVS_MACADDR\"
-890,899d889
-< 		$SYNONET --set_ip -4 $DEVICE flush
-< 		/sbin/ifconfig $DEVICE up
-< 		echo 1 >>  /proc/sys/net/ipv6/conf/${DEVICE}/disable_ipv6
+> 		fi
+> 
+> 	else
+901d915
 < 		/bin/ovs-vsctl add-port $1 ${DEVICE}
-< 
+903,906c917,918
 < 		#Set MTU
 < 		MTU_VALUE=`get_mtu_value ${DEVICE}`
 < 		MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
 < 		ifconfig ${DEVICE} ${MTU}
-< 	done
-901,902c891,916
-< 	start_ovs_vlan $1 $ifconfigFile
-< 	setup_ovs_default_flow $1
 ---
-> 	else
-> 
-> 		check_exist_ovs $1
-> 		/bin/ovs-vsctl add-br $1
-> 		set_ovs_mac_address $1
-> 		for device in `grep -l "^BRIDGE=$1$" /etc/sysconfig/network-scripts/ifcfg-*` ; do
-> 			DEVICE=`basename ${device} | cut -d '-' -f 2`
-> 			# Config bridge of wlan in /etc/hostapd/hostapd.conf and controlled by hostapd (activate_ap)
-> 			find=`echo "${DEVICE}" | grep -c wlan`
-> 			if [ $find -eq 1  ]; then
-> 				# only wired interface will be added to bridge as a slave
-> 				# wlan interface should be handled by synowifid
-> 				continue
-> 			fi
-> 			$SYNONET --set_ip -4 $DEVICE flush
-> 			/sbin/ifconfig $DEVICE up
-> 			echo 1 >>  /proc/sys/net/ipv6/conf/${DEVICE}/disable_ipv6
-> 
-> 			setup_mtu ${DEVICE}
-> 			/bin/ovs-vsctl add-port $1 ${DEVICE}
-> 		done
-> 
-> 		setup_ovs_patch $1 "$OVS_PATCH"
-> 		start_ovs_vlan $1 $ifconfigFile
-> 		setup_ovs_default_flow $1
+> 		setup_mtu ${DEVICE}
+> 		/bin/ovs-vsctl add-port $1 ${DEVICE}
+908a921
+> 	setup_ovs_patch $1 "$OVS_PATCH"
+911a925,926
 >     fi
-941a956,960
+> 
+949a965,969
 > 	local OVS_PARENT
 > 	local OVS_VIRTUAL
 > 	local SLAVE_LIST
 > 	local OVS_VLAN_ID
 > 
-943,946c962,970
+951,954c971,979
 < 	for slave in `synogetkeyvalue $ifconfigFile SLAVE_LIST`
 < 	do
 < 		/sbin/ip link set dev ${slave} down
@@ -108,30 +73,30 @@
 > 			/sbin/ip link set dev ${slave} down
 > 		done
 > 	fi
-948d971
+956d980
 < 	unset OVS_VLAN_ID
-952c975
+960c984
 < 		if [ "$(grep OVS_VLAN_ID $ifconfigFile)" ]; then
 ---
 > 		if [ ! -z "${OVS_VLAN_ID}" ]; then
-973a997,999
+981a1006,1008
 > 	local ifconfigFile
 > 	local OVS_PATCH
 > 
-980c1006
+988c1015
 <                 return
 ---
 >         return
-997,1000c1023
+1005,1008c1032
 < 		#Set MTU
 < 		MTU_VALUE=`get_mtu_value ${DEVICE}`
 < 		MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
 < 		ifconfig ${DEVICE} ${MTU}
 ---
 > 		setup_mtu ${DEVICE}
-1003a1027
+1011a1036
 > 	setup_ovs_patch $1 "$OVS_PATCH"
-1031a1056,1069
+1039a1065,1078
 > setup_ovs_patch()
 > {
 > 	local ifname="$1"
@@ -146,7 +111,7 @@
 > 	fi
 > }
 > 
-1071a1110,1125
+1079a1119,1134
 > gen_mtu_spec() {
 > 	local DEVICE="$1"
 > 	local MTU_VALUE
@@ -163,35 +128,35 @@
 > 	ifconfig ${DEVICE} $(gen_mtu_spec ${DEVICE})
 > }
 > 
-1145,1146c1199
+1158,1159c1213
 < 			unset IPADDR NETMASK IP MASK MTU MTU_VALUE
 < 			MTU_VALUE=`get_mtu_value ${thisif}`
 ---
 > 			unset IPADDR NETMASK IP MASK MTU
-1151c1204
+1164c1218
 < 			MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
 ---
 > 			MTU=$(gen_mtu_spec ${thisif})
-1159,1162c1212
+1172,1175c1226
 < 			unset MTU MTU_VALUE
 < 			MTU_VALUE=`get_mtu_value ${thisif}`
 < 			MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
 < 			thisvalue="inet 0.0.0.0 ${MTU}"
 ---
 > 			thisvalue="inet 0.0.0.0 $(gen_mtu_spec ${thisif})"
-1387d1436
+1400d1450
 < 	local MTU_VALUE
-1390d1438
+1403d1452
 < 	local MTU
-1409d1456
+1422d1470
 < 		MTU_VALUE=`get_mtu_value ${ifn}`
-1412d1458
+1425d1472
 < 		MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
-1414c1460
+1427c1474
 < 			thisvalue="${IP} ${MASK} ${MTU}"
 ---
 > 			thisvalue="${IP} ${MASK} $(gen_mtu_spec ${ifn})"
-1587,1621c1633
+1601,1635c1648
 < 	if [ ! -z "${dhcp_interfaces}" ]; then
 < 		if [ -x /sbin/udhcpc ]; then
 < 			for dhcpif in ${dhcp_interfaces}
@@ -229,27 +194,23 @@
 < 	fi
 ---
 > 	start_dhcp_client
-1950c1962
-< 	/sbin/stop dhcp-client IFACE=$1
----
-> 	/sbin/stop dhcp-clIent IFACE=$1
-1956a1969,1970
+1972a1986,1987
 > 	local STAGE=$1
 > 
-1961c1975
+1977c1992
 < 				ifconfig ${dhcpif} 0.0.0.0 up
 ---
 > 				ifconfig ${dhcpif} 0.0.0.0 up $(gen_mtu_spec ${dhcpif})
-1963a1978
+1979a1995
 > 				sleep 1
-1969,1972c1984
+1985,1988c2001
 < 				unset MTU MTU_VALUE
 < 				MTU_VALUE=`get_mtu_value ${dhcpif}`
 < 				MTU="" ; [ -n "${MTU_VALUE}" ] && MTU="mtu ${MTU_VALUE}"
 < 
 ---
 > 				local MTU=$(gen_mtu_spec ${dhcpif})
-1979c1991,1999
+1995c2008,2016
 < 				/sbin/start dhcp-client IFACE="${dhcpif}" STAGE="rc" MTU="${MTU}"
 ---
 > 				ifconfig ${dhcpif} 0.0.0.0 up $(gen_mtu_spec ${dhcpif})
@@ -261,7 +222,7 @@
 > 				else
 > 					/sbin/start dhcp-client IFACE="${dhcpif}" MTU="${MTU}" ${STAGE}
 > 				fi
-2020c2040
+2041c2062
 < 	start_dhcp_client
 ---
 > 	start_dhcp_client STAGE="rc"
