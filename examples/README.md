@@ -27,9 +27,9 @@ That needs an additional step of hack:
 	eth1_mtu="9000"
 	eth2_mtu="9000"
 	eth3_mtu="9000"
-	bond0_mtu="9000"
-	bond1_mtu="1500"
-	bond99_mtu="9000"
+	ovs_bond0_mtu="9000"
+	ovs_bond1_mtu="1500"
+	ovs_bond99_mtu="9000"
 	```
 - Q: I am unable to get large MTU on my VM's tap interfaces!
 
